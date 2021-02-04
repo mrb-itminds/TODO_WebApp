@@ -4,20 +4,22 @@ using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Infrastructure.Persistence.Migrations
+namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210204142849_intitialWithExamples")]
+    partial class intitialWithExamples
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.0");
+                .HasAnnotation("ProductVersion", "5.0.1");
 
             modelBuilder.Entity("Domain.Entities.ExampleChild", b =>
                 {
@@ -32,12 +34,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ExampleChildListId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ExampleEnum")
-                        .HasColumnType("int");
-
                     b.Property<DateTimeOffset?>("LastModified")
                         .HasColumnType("datetimeoffset");
 
@@ -49,14 +45,20 @@ namespace Infrastructure.Persistence.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<int>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ExampleChildListId");
+                    b.HasIndex("ParentId");
 
                     b.ToTable("ExampleChildren");
                 });
 
-            modelBuilder.Entity("Domain.Entities.ExampleChildList", b =>
+            modelBuilder.Entity("Domain.Entities.ExampleParent", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -70,21 +72,23 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ExampleChildLists");
+                    b.ToTable("ExampleParents");
                 });
 
             modelBuilder.Entity("Domain.Entities.ExampleChild", b =>
                 {
-                    b.HasOne("Domain.Entities.ExampleChildList", "ExampleChildList")
-                        .WithMany("ExampleChildren")
-                        .HasForeignKey("ExampleChildListId");
+                    b.HasOne("Domain.Entities.ExampleParent", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("ExampleChildList");
+                    b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("Domain.Entities.ExampleChildList", b =>
+            modelBuilder.Entity("Domain.Entities.ExampleParent", b =>
                 {
-                    b.Navigation("ExampleChildren");
+                    b.Navigation("Children");
                 });
 #pragma warning restore 612, 618
         }
