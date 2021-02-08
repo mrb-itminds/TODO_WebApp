@@ -1,0 +1,20 @@
+@startuml
+Class User {
+id
+name
+List<Todo>
+}
+
+Class Todo {
+title
+state
+
+}
+
+enum TODO_states{
+complete
+active
+}
+User "1" *-- "0..*" Todo
+Todo "0..*" <|-- "1" TODO_states
+@enduml
