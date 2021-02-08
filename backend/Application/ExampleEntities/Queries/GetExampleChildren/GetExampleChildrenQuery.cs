@@ -1,14 +1,14 @@
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Application.Common.Interfaces;
+using Application.ExampleChildren;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Application.ExampleChildren;
 
-namespace Application.ExampleChildren.Queries.GetExampleChildren
+namespace Application.ExampleEntities.Queries.GetExampleChildren
 {
   public class GetExampleChildrenQuery : IRequest<List<ExampleChildIdDto>>
   {

@@ -1,11 +1,11 @@
 using Application.Common.Exceptions;
 using Application.ExampleChildren;
-using Application.ExampleChildren.Commands.UpdateExampleChild;
 using Domain.Enums;
 using FluentAssertions;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.ExampleEntities.Commands.UpdateExampleEntity;
 using Xunit;
 
 namespace Application.UnitTests.ExampleChildren.Commands.UpdateExampleChild

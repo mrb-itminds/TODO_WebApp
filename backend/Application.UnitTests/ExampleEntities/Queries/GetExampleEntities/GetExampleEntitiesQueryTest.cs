@@ -1,11 +1,11 @@
 using Application.ExampleChildren;
-using Application.ExampleChildren.Queries.GetExampleChildren;
 using AutoMapper;
 using FluentAssertions;
 using Infrastructure.Persistence;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.TodoItems.Commands.Queries.GetTodoItems;
 using Xunit;
 
 namespace Application.UnitTests.ExampleChildren.Queries.GetExampleChildren
