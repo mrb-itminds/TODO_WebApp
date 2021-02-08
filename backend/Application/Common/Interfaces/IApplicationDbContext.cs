@@ -11,6 +11,7 @@ namespace Application.Common.Interfaces
 
     DbSet<ExampleChild> ExampleChildren { get; set; }
     DbSet<ExampleParent> ExampleParents { get; set; }
+    DbSet<TodoItem> TodoItems { get; set; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
   }
 }
