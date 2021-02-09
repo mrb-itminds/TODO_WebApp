@@ -1,5 +1,19 @@
-import { Box, Button, Container, Heading, Text, Checkbox , Table, Thead, Tbody,
-  Tfoot, Tr, Th, Td, TableCaption,} from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Checkbox,
+  Container,
+  Heading,
+  Table,
+  TableCaption,
+  Tbody,
+  Td,
+  Text,
+  Tfoot,
+  Th,
+  Thead,
+  Tr
+} from "@chakra-ui/react";
 import { useColors } from "hooks/useColors";
 import { useLocales } from "hooks/useLocales";
 import Link from "next/link";
@@ -10,16 +24,15 @@ import {
   CreateExampleChildCommand,
   ExampleChildIdDto,
   ExampleEnum,
-  TodoItemIdDto
+  ITodoItemIdDto,
+  TodoItemIdDto,
+  TodoStates
 } from "services/backend/nswagts";
 import { logger } from "utils/logger";
+
 import styles from "./styles.module.css";
 
-
-
-
 const Start: FC = () => {
-
   const [data, setData] = useState<TodoItemIdDto[]>([]);
   const { route } = useRouter();
   const { t, locale, localeNameMap } = useLocales();
@@ -36,59 +49,52 @@ const Start: FC = () => {
     }
   }, []);
 
-
-  
   useEffect(() => {
     fetchData();
   }, [fetchData]);
-  
 
-  
-  function TodoList(props: { tableData: any; }) {
+  function TodoList(props: { tableData: any }) {
     const numbers = props.tableData;
-    var complete = true;
-    
-    const listItems = numbers.map((TodoItem) => 
-    
-    <Tr key={TodoItem.id}>
-      <Td>{TodoItem.id}</Td>
-      <Td>{TodoItem.name}</Td>
-      <Td>
-        <Checkbox
-        size="lg"
-        colorScheme="green"
-        defaultChecked={(TodoItem.type == 1) ? true : false}
-        inputProps={{ 'aria-label': 'Checkbox A' }}/>
-      </Td>
-    </Tr>
-  );
-    
-    return(
+    const complete = true;
+
+    const listItems = numbers.map((TodoItem: ITodoItemIdDto) => (
+      <Tr key={TodoItem.id}>
+        <Td>{TodoItem.id}</Td>
+        <Td>{TodoItem.name}</Td>
+        <Td>
+          <Checkbox
+            size="lg"
+            colorScheme="green"
+            defaultChecked={TodoItem.type == TodoStates.Complete}
+            inputProps={{ "aria-label": "Checkbox A" }}
+          />
+        </Td>
+      </Tr>
+    ));
+
+    return (
       <div>
-          <Table variant="simple">
-            <TableCaption placement="top">
-              <Heading>TODO List</Heading>
-            </TableCaption>
-        <Thead>
-          <Tr>
-            <Th>ID</Th>
-            <Th>Todo</Th>
-            <Th>Status</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-            {listItems}
-        </Tbody>
-      </Table>
-      
+        <Table variant="simple">
+          <TableCaption placement="top">
+            <Heading>TODO List</Heading>
+          </TableCaption>
+          <Thead>
+            <Tr>
+              <Th>ID</Th>
+              <Th>Todo</Th>
+              <Th>Status</Th>
+            </Tr>
+          </Thead>
+          <Tbody>{listItems}</Tbody>
+        </Table>
       </div>
     );
   }
-  
+
   return (
     <Container>
-      <TodoList tableData = {data} ></TodoList>
+      <TodoList tableData={data}></TodoList>
     </Container>
   );
-};  
-export default Start
+};
+export default Start;

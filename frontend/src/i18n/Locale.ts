@@ -5,6 +5,7 @@ export interface Locale {
     title: string;
     byLine: string;
     dataLine: string;
+    todoItemLine: string
 
     actions: {
       addNew: string;
