@@ -14,6 +14,7 @@ import {
   Thead,
   Tr
 } from "@chakra-ui/react";
+import TodoList from "components/TodoListTable";
 import { useColors } from "hooks/useColors";
 import { useLocales } from "hooks/useLocales";
 import Link from "next/link";
@@ -32,7 +33,7 @@ import { logger } from "utils/logger";
 
 import styles from "./styles.module.css";
 
-const Start: FC = () => {
+const Start: FC = props => {
   const [data, setData] = useState<TodoItemIdDto[]>([]);
   const { route } = useRouter();
   const { t, locale, localeNameMap } = useLocales();
@@ -53,7 +54,7 @@ const Start: FC = () => {
     fetchData();
   }, [fetchData]);
 
-  function TodoList(props: { tableData: TodoItemIdDto }) {
+  function TodoListLegacy(props: { tableData: TodoItemIdDto }) {
     const numbers = props.tableData;
 
     const listItems = numbers.map((TodoItem: ITodoItemIdDto) => (
