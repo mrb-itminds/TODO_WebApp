@@ -54,7 +54,7 @@ const Start: FC = () => {
       <Wrap justify="center">
         <Heading>TODO List</Heading>
       </Wrap>
-      <CreateTodo></CreateTodo>
+      <CreateTodo fetchData={fetchData}></CreateTodo>
       <TodoList tableData={data}></TodoList>
     </Container>
   );

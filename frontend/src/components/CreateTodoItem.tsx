@@ -7,16 +7,17 @@ import {
   Input
 } from "@chakra-ui/react";
 import { Field, Form, Formik } from "formik";
-import { FC, useCallback } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { genTodoItemClient } from "services/backend/apiClients";
 import {
   CreateTodoItemCommand,
   ITodoItemIdDto,
+  TodoItemDto,
   TodoItemIdDto,
   TodoStates
 } from "services/backend/nswagts";
 
-const CreateTodo: FC = () => {
+const CreateTodo: FC<props> = props => {
   function validateName(value) {
     let error;
     if (!value) {
@@ -36,6 +37,7 @@ const CreateTodo: FC = () => {
         }
       })
     );
+    props.fetchData();
   }, []);
 
   return (
@@ -43,8 +45,9 @@ const CreateTodo: FC = () => {
       initialValues={{ name: "" }}
       onSubmit={(values, actions) => {
         setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
+          //alert(JSON.stringify(values, null, 2));
           addTodoItem(values);
+
           actions.setSubmitting(false);
         }, 1000);
       }}>
