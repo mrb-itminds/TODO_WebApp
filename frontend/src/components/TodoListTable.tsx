@@ -14,11 +14,34 @@ import {
   Thead,
   Tr
 } from "@chakra-ui/react";
-import { FC } from "react";
-import { ITodoItemIdDto, TodoItemIdDto, TodoStates } from "services/backend/nswagts";
+import { FC, useCallback } from "react";
+import { genTodoItemClient } from "services/backend/apiClients";
+import {
+  ITodoItemIdDto,
+  TodoItemIdDto,
+  TodoStates,
+  UpdateTodoItemCommand
+} from "services/backend/nswagts";
 
-const TodoList: FC = (props: { tableData: TodoItemIdDto }) => {
+const TodoList: FC<props> = (props: { tableData: TodoItemIdDto }) => {
   const numbers = props.tableData;
+
+  const updateTodoState = useCallback(async value => {
+    const todoClient = await genTodoItemClient();
+    if (value.type == TodoStates.Complete) {
+      value.type = TodoStates.Active;
+    } else value.type = TodoStates.Complete;
+    const command = new UpdateTodoItemCommand({
+      id: value.id,
+      todoItem: {
+        name: value.name,
+        type: value.type,
+        userId: 1
+      }
+    });
+    await todoClient.update(value.id, command);
+    props.fetchData();
+  }, []);
 
   const listItems = numbers.map((TodoItem: ITodoItemIdDto) => (
     <Tr key={TodoItem.id}>
@@ -30,6 +53,10 @@ const TodoList: FC = (props: { tableData: TodoItemIdDto }) => {
           colorScheme="green"
           defaultChecked={TodoItem.type == TodoStates.Complete}
           inputProps={{ "aria-label": "Checkbox A" }}
+          onChange={clicked => {
+            console.log(TodoItem.id);
+            updateTodoState(TodoItem);
+          }}
         />
       </Td>
     </Tr>
