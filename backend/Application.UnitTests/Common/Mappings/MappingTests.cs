@@ -1,5 +1,4 @@
 using Application.ExampleChildren;
-using Application.ExampleChildren.Queries.GetExampleChildren;
 using Application.ExampleParents;
 using AutoMapper;
 using Domain.Entities;

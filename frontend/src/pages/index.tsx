@@ -1,10 +1,10 @@
-import Demo from "components/Demo/Demo";
+import Start from "components/StartPage";
 import { Locale } from "i18n/Locale";
 import { GetStaticProps, NextPage } from "next";
 import { I18nProps } from "next-rosetta";
 
 const IndexPage: NextPage = () => {
-  return <Demo />;
+  return <Start />;
 };
 
 export const getStaticProps: GetStaticProps<I18nProps<Locale>> = async context => {

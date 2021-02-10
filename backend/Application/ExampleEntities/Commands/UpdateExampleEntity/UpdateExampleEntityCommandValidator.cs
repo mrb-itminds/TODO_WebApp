@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Application.ExampleChildren.Commands.UpdateExampleChild
+namespace Application.ExampleEntities.Commands.UpdateExampleEntity
 {
   public class UpdateExampleChildCommandValidator : AbstractValidator<UpdateExampleChildCommand>
   {

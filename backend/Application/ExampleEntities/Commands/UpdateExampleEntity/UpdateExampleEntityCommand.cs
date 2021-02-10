@@ -1,14 +1,14 @@
-using Application.Common.Exceptions;
-using Application.Common.Interfaces;
-using Domain.Entities;
-using Domain.Enums;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Exceptions;
+using Application.Common.Interfaces;
+using Application.ExampleChildren;
+using Domain.Entities;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
-namespace Application.ExampleChildren.Commands.UpdateExampleChild
+namespace Application.ExampleEntities.Commands.UpdateExampleEntity
 {
   public class UpdateExampleChildCommand : IRequest
   {

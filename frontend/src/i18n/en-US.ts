@@ -1,3 +1,4 @@
+import { TodoStates } from "services/backend/nswagts";
 import { Locale } from "./Locale";
 
 export const table: Locale = {
@@ -7,6 +8,8 @@ export const table: Locale = {
     title: "Hello World",
     byLine: "When data is loading it is displayed below",
     dataLine: "Child {{id}} of type {{type}}",
+    todoItemLine: "id:{{id}}  {{name}} - Status {{type}}",
+
 
     actions: {
       addNew: "Add new Child"
