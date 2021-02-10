@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Center,
   Checkbox,
   Container,
   Heading,
@@ -12,28 +13,22 @@ import {
   Tfoot,
   Th,
   Thead,
-  Tr
+  Tr,
+  Wrap
 } from "@chakra-ui/react";
 import TodoList from "components/TodoListTable";
 import { useColors } from "hooks/useColors";
 import { useLocales } from "hooks/useLocales";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FC, useCallback, useEffect, useState } from "react";
-import { genExampleClient, genTodoItemClient } from "services/backend/apiClients";
-import {
-  CreateExampleChildCommand,
-  ExampleChildIdDto,
-  ExampleEnum,
-  ITodoItemIdDto,
-  TodoItemIdDto,
-  TodoStates
-} from "services/backend/nswagts";
+import { genTodoItemClient } from "services/backend/apiClients";
+import { TodoItemIdDto, TodoStates } from "services/backend/nswagts";
 import { logger } from "utils/logger";
 
+import CreateTodo from "./CreateTodoItem";
 import styles from "./styles.module.css";
 
-const Start: FC = props => {
+const Start: FC = () => {
   const [data, setData] = useState<TodoItemIdDto[]>([]);
   const { route } = useRouter();
   const { t, locale, localeNameMap } = useLocales();
@@ -54,45 +49,12 @@ const Start: FC = props => {
     fetchData();
   }, [fetchData]);
 
-  function TodoListLegacy(props: { tableData: TodoItemIdDto }) {
-    const numbers = props.tableData;
-
-    const listItems = numbers.map((TodoItem: ITodoItemIdDto) => (
-      <Tr key={TodoItem.id}>
-        <Td>{TodoItem.id}</Td>
-        <Td>{TodoItem.name}</Td>
-        <Td>
-          <Checkbox
-            size="lg"
-            colorScheme="green"
-            defaultChecked={TodoItem.type == TodoStates.Complete}
-            inputProps={{ "aria-label": "Checkbox A" }}
-          />
-        </Td>
-      </Tr>
-    ));
-
-    return (
-      <div>
-        <Table variant="simple">
-          <TableCaption placement="top">
-            <Heading>TODO List</Heading>
-          </TableCaption>
-          <Thead>
-            <Tr>
-              <Th>ID</Th>
-              <Th>Todo</Th>
-              <Th>Status</Th>
-            </Tr>
-          </Thead>
-          <Tbody>{listItems}</Tbody>
-        </Table>
-      </div>
-    );
-  }
-
   return (
     <Container>
+      <Wrap justify="center">
+        <Heading>TODO List</Heading>
+      </Wrap>
+      <CreateTodo></CreateTodo>
       <TodoList tableData={data}></TodoList>
     </Container>
   );

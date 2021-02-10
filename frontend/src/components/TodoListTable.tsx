@@ -38,9 +38,6 @@ const TodoList: FC = (props: { tableData: TodoItemIdDto }) => {
   return (
     <div>
       <Table variant="simple">
-        <TableCaption placement="top">
-          <Heading>TODO List</Heading>
-        </TableCaption>
         <Thead>
           <Tr>
             <Th>ID</Th>
