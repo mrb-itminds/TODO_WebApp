@@ -1,20 +1,23 @@
+import { DeleteIcon, HamburgerIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   Checkbox,
   Container,
   Heading,
+  IconButton,
+  MenuButton,
   Table,
   TableCaption,
   Tbody,
   Td,
   Text,
-  Tfoot,
   Th,
   Thead,
   Tr
 } from "@chakra-ui/react";
-import { FC, useCallback } from "react";
+import { IncomingMessage } from "http";
+import React, { FC, useCallback } from "react";
 import { genTodoItemClient } from "services/backend/apiClients";
 import {
   ITodoItemIdDto,
@@ -43,6 +46,12 @@ const TodoList: FC<props> = (props: { tableData: TodoItemIdDto }) => {
     props.fetchData();
   }, []);
 
+  const deleteTodo = useCallback(async value => {
+    const todoClient = await genTodoItemClient();
+    await todoClient.delete(value.id);
+    props.fetchData();
+  }, []);
+
   const listItems = numbers.map((TodoItem: ITodoItemIdDto) => (
     <Tr key={TodoItem.id}>
       <Td>{TodoItem.id}</Td>
@@ -53,10 +62,19 @@ const TodoList: FC<props> = (props: { tableData: TodoItemIdDto }) => {
           colorScheme="green"
           defaultChecked={TodoItem.type == TodoStates.Complete}
           inputProps={{ "aria-label": "Checkbox A" }}
-          onChange={clicked => {
-            console.log(TodoItem.id);
+          onChange={() => {
             updateTodoState(TodoItem);
           }}
+        />
+      </Td>
+      <Td>
+        <IconButton
+          onClick={() => {
+            deleteTodo(TodoItem);
+          }}
+          aria-label="Search database"
+          size="xs"
+          icon={<DeleteIcon />}
         />
       </Td>
     </Tr>

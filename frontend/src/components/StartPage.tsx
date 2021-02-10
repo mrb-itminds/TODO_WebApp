@@ -38,7 +38,7 @@ const Start: FC = () => {
     try {
       const todoItemClient = await genTodoItemClient();
       const data = await todoItemClient.get();
-      if (data && data.length > 0) setData(data);
+      if (data && data.length >= 0) setData(data);
       else logger.info("todoItemClient.get no data");
     } catch (err) {
       //logger.warn("todoItemClient.get Error", err);
