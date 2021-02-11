@@ -10,6 +10,8 @@ import {
   Heading,
   IconButton,
   Input,
+  InputGroup,
+  InputRightAddon,
   MenuButton,
   Table,
   TableCaption,
@@ -31,7 +33,7 @@ import {
   UpdateTodoItemCommand
 } from "services/backend/nswagts";
 
-const TodoList: FC<props> = (props: { tableData: TodoItemIdDto }) => {
+const TodoList: FC<props> = (props: { tableData: TodoItemIdDto[] }) => {
   const numbers = props.tableData;
 
   const updateTodoState = useCallback(async value => {
@@ -100,15 +102,22 @@ const TodoList: FC<props> = (props: { tableData: TodoItemIdDto }) => {
                 <Field name="name" validate={validateName}>
                   {({ field, form }) => (
                     <FormControl isInvalid={form.errors.name && form.touched.name}>
-                      <Input {...field} type="text" name="name" placeholder="Todo" />
-                      <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                      <InputGroup size="md">
+                        <Input {...field} type="text" name="name" placeholder="Todo" />
+                        <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                        <InputRightAddon width="4.5rem">
+                          <Button
+                            h="1.75rem"
+                            width="4.5rem"
+                            isLoading={props.isSubmitting}
+                            type="submit">
+                            Update
+                          </Button>
+                        </InputRightAddon>
+                      </InputGroup>
                     </FormControl>
                   )}
                 </Field>
-
-                <Button mt={4} colorScheme="teal" isLoading={props.isSubmitting} type="submit">
-                  Submit
-                </Button>
               </Container>
             </Form>
           )}
@@ -140,7 +149,7 @@ const TodoList: FC<props> = (props: { tableData: TodoItemIdDto }) => {
 
   return (
     <div>
-      <Table variant="simple">
+      <Table minWidth="700px" variant="simple">
         <Thead>
           <Tr>
             <Th>ID</Th>

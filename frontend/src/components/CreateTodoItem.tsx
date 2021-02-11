@@ -4,7 +4,9 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Input
+  Input,
+  InputGroup,
+  InputRightAddon
 } from "@chakra-ui/react";
 import { Field, Form, Formik } from "formik";
 import { FC, useCallback, useEffect, useState } from "react";
@@ -42,7 +44,7 @@ const CreateTodo: FC<props> = props => {
 
   return (
     <Formik
-      initialValues={{ name: "Test" }}
+      initialValues={{ name: "" }}
       onSubmit={(values, actions) => {
         setTimeout(() => {
           //alert(JSON.stringify(values, null, 2));
@@ -53,20 +55,23 @@ const CreateTodo: FC<props> = props => {
       }}>
       {props => (
         <Form>
-          <Container>
+          <Container minWidth="700px">
             <Field name="name" validate={validateName}>
               {({ field, form }) => (
                 <FormControl isInvalid={form.errors.name && form.touched.name}>
                   <FormLabel htmlFor="name">Add a new Todo</FormLabel>
-                  <Input {...field} type="text" name="name" placeholder="Todo" />
-                  <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                  <InputGroup size="lg">
+                    <Input {...field} type="text" name="name" placeholder="Todo" />
+                    <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                    <InputRightAddon>
+                      <Button isLoading={props.isSubmitting} type="submit">
+                        Submit
+                      </Button>
+                    </InputRightAddon>
+                  </InputGroup>
                 </FormControl>
               )}
             </Field>
-
-            <Button mt={4} colorScheme="teal" isLoading={props.isSubmitting} type="submit">
-              Submit
-            </Button>
           </Container>
         </Form>
       )}
