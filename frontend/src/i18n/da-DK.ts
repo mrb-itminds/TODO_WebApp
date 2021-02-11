@@ -4,13 +4,15 @@ export const table: Locale = {
   locale: "Dansk",
 
   example: {
-    title: "Hej Verden",
+    title: "Todo Liste",
     byLine: "Når dataen er indhentet vises den her",
     dataLine: "{{type}} Barn {{id}} ",
     todoItemLine: "id:{{id}}  {{name}} - Opgaven er {{type}}",
+    addTodoLine: "Tilføj en ny Todo",
 
     actions: {
-      addNew: "Tilføj et nyt barn"
+      addNew: "Tilføj",
+      updateTodo: "Opdater"
     }
   }
 };

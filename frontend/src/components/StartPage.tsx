@@ -26,6 +26,7 @@ import { TodoItemIdDto, TodoStates } from "services/backend/nswagts";
 import { logger } from "utils/logger";
 
 import CreateTodo from "./CreateTodoItem";
+import LanguageToggle from "./LanguageToggle";
 import styles from "./styles.module.css";
 
 const Start: FC = () => {
@@ -52,10 +53,11 @@ const Start: FC = () => {
   return (
     <Container>
       <Wrap justify="center">
-        <Heading>TODO List</Heading>
+        <Heading>{t("example.title")}</Heading>
 
         <CreateTodo fetchData={fetchData}></CreateTodo>
         <TodoList tableData={data} fetchData={fetchData}></TodoList>
+        <LanguageToggle></LanguageToggle>
       </Wrap>
     </Container>
   );

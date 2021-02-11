@@ -5,10 +5,12 @@ export interface Locale {
     title: string;
     byLine: string;
     dataLine: string;
-    todoItemLine: string
+    todoItemLine: string;
+    addTodoLine: string;
 
     actions: {
       addNew: string;
+      updateTodo: string;
     };
   };
 }

@@ -9,6 +9,7 @@ import {
   InputRightAddon
 } from "@chakra-ui/react";
 import { Field, Form, Formik } from "formik";
+import { useLocales } from "hooks/useLocales";
 import { FC, useCallback, useEffect, useState } from "react";
 import { genTodoItemClient } from "services/backend/apiClients";
 import {
@@ -20,6 +21,8 @@ import {
 } from "services/backend/nswagts";
 
 const CreateTodo: FC<props> = props => {
+  const { t, locale, localeNameMap } = useLocales();
+
   function validateName(value) {
     let error;
     if (!value) {
@@ -59,13 +62,13 @@ const CreateTodo: FC<props> = props => {
             <Field name="name" validate={validateName}>
               {({ field, form }) => (
                 <FormControl isInvalid={form.errors.name && form.touched.name}>
-                  <FormLabel htmlFor="name">Add a new Todo</FormLabel>
+                  <FormLabel htmlFor="name">{t("example.addTodoLine")}</FormLabel>
                   <InputGroup size="lg">
                     <Input {...field} type="text" name="name" placeholder="Todo" />
                     <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                     <InputRightAddon>
                       <Button isLoading={props.isSubmitting} type="submit">
-                        Submit
+                        {t("example.actions.addNew")}
                       </Button>
                     </InputRightAddon>
                   </InputGroup>

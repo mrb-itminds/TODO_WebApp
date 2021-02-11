@@ -23,6 +23,7 @@ import {
   Tr
 } from "@chakra-ui/react";
 import { Field, Form, Formik } from "formik";
+import { useLocales } from "hooks/useLocales";
 import { IncomingMessage } from "http";
 import React, { FC, useCallback } from "react";
 import { genTodoItemClient } from "services/backend/apiClients";
@@ -33,7 +34,13 @@ import {
   UpdateTodoItemCommand
 } from "services/backend/nswagts";
 
-const TodoList: FC<props> = (props: { tableData: TodoItemIdDto[] }) => {
+interface TodoListProps {
+  tableData: TodoItemIdDto[];
+  fetchData: () => Promise<void>;
+}
+
+const TodoList: FC<TodoListProps> = props => {
+  const { t, locale, localeNameMap } = useLocales();
   const numbers = props.tableData;
 
   const updateTodoState = useCallback(async value => {
@@ -73,7 +80,7 @@ const TodoList: FC<props> = (props: { tableData: TodoItemIdDto[] }) => {
     props.fetchData();
   }, []);
 
-  function validateName(value) {
+  function validateName(value: string) {
     let error;
     if (!value) {
       error = "Name is required";
@@ -90,7 +97,7 @@ const TodoList: FC<props> = (props: { tableData: TodoItemIdDto[] }) => {
           initialValues={{ name: TodoItem.name }}
           onSubmit={(values, actions) => {
             setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
+              //alert(JSON.stringify(values, null, 2));
               TodoItem.name = values.name;
               updateTodoText(TodoItem);
               actions.setSubmitting(false);
@@ -104,16 +111,16 @@ const TodoList: FC<props> = (props: { tableData: TodoItemIdDto[] }) => {
                     <FormControl isInvalid={form.errors.name && form.touched.name}>
                       <InputGroup size="md">
                         <Input {...field} type="text" name="name" placeholder="Todo" />
-                        <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                         <InputRightAddon width="4.5rem">
                           <Button
                             h="1.75rem"
                             width="4.5rem"
                             isLoading={props.isSubmitting}
                             type="submit">
-                            Update
+                            {t("example.actions.updateTodo")}
                           </Button>
                         </InputRightAddon>
+                        <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                       </InputGroup>
                     </FormControl>
                   )}
@@ -141,6 +148,7 @@ const TodoList: FC<props> = (props: { tableData: TodoItemIdDto[] }) => {
           }}
           aria-label="Search database"
           size="xs"
+          bgColor="red.200"
           icon={<DeleteIcon />}
         />
       </Td>

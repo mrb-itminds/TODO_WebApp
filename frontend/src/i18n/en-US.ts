@@ -1,18 +1,20 @@
 import { TodoStates } from "services/backend/nswagts";
+
 import { Locale } from "./Locale";
 
 export const table: Locale = {
   locale: "English (US)",
 
   example: {
-    title: "Hello World",
+    title: "Todo List",
     byLine: "When data is loading it is displayed below",
     dataLine: "Child {{id}} of type {{type}}",
     todoItemLine: "id:{{id}}  {{name}} - Status {{type}}",
-
+    addTodoLine: "Add a new Todo",
 
     actions: {
-      addNew: "Add new Child"
+      addNew: "Add",
+      updateTodo: "Update"
     }
   }
 };
