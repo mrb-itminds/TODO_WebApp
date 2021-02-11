@@ -11,6 +11,7 @@ export const table: Locale = {
     dataLine: "Child {{id}} of type {{type}}",
     todoItemLine: "id:{{id}}  {{name}} - Status {{type}}",
     addTodoLine: "Add a new Todo",
+    completeCounter: "{{completed}} completed out of {{total}}",
 
     actions: {
       addNew: "Add",

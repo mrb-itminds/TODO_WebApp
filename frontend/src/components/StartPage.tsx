@@ -28,6 +28,7 @@ import { logger } from "utils/logger";
 import CreateTodo from "./CreateTodoItem";
 import LanguageToggle from "./LanguageToggle";
 import styles from "./styles.module.css";
+import TodoCounter from "./TodoCounter";
 
 const Start: FC = () => {
   const [data, setData] = useState<TodoItemIdDto[]>([]);
@@ -52,11 +53,12 @@ const Start: FC = () => {
 
   return (
     <Container>
-      <Wrap justify="center">
+      <Wrap width="700px" justify="center">
         <Heading>{t("example.title")}</Heading>
 
         <CreateTodo fetchData={fetchData}></CreateTodo>
         <TodoList tableData={data} fetchData={fetchData}></TodoList>
+        <TodoCounter tableData={data}></TodoCounter>
         <LanguageToggle></LanguageToggle>
       </Wrap>
     </Container>

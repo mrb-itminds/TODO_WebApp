@@ -9,6 +9,7 @@ export const table: Locale = {
     dataLine: "{{type}} Barn {{id}} ",
     todoItemLine: "id:{{id}}  {{name}} - Opgaven er {{type}}",
     addTodoLine: "Tilføj en ny Todo",
+    completeCounter: "{{completed}} færdiggjort ud af {{total}}",
 
     actions: {
       addNew: "Tilføj",

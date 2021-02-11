@@ -7,6 +7,7 @@ export interface Locale {
     dataLine: string;
     todoItemLine: string;
     addTodoLine: string;
+    completeCounter: string;
 
     actions: {
       addNew: string;
