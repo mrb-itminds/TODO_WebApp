@@ -42,7 +42,7 @@ const CreateTodo: FC<props> = props => {
 
   return (
     <Formik
-      initialValues={{ name: "" }}
+      initialValues={{ name: "Test" }}
       onSubmit={(values, actions) => {
         setTimeout(() => {
           //alert(JSON.stringify(values, null, 2));

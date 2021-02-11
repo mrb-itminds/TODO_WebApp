@@ -4,8 +4,12 @@ import {
   Button,
   Checkbox,
   Container,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
   Heading,
   IconButton,
+  Input,
   MenuButton,
   Table,
   TableCaption,
@@ -16,6 +20,7 @@ import {
   Thead,
   Tr
 } from "@chakra-ui/react";
+import { Field, Form, Formik } from "formik";
 import { IncomingMessage } from "http";
 import React, { FC, useCallback } from "react";
 import { genTodoItemClient } from "services/backend/apiClients";
@@ -46,16 +51,69 @@ const TodoList: FC<props> = (props: { tableData: TodoItemIdDto }) => {
     props.fetchData();
   }, []);
 
+  const updateTodoText = useCallback(async value => {
+    const todoClient = await genTodoItemClient();
+    const command = new UpdateTodoItemCommand({
+      id: value.id,
+      todoItem: {
+        name: value.name,
+        type: value.type,
+        userId: 1
+      }
+    });
+    await todoClient.update(value.id, command);
+    props.fetchData();
+  }, []);
+
   const deleteTodo = useCallback(async value => {
     const todoClient = await genTodoItemClient();
     await todoClient.delete(value.id);
     props.fetchData();
   }, []);
 
+  function validateName(value) {
+    let error;
+    if (!value) {
+      error = "Name is required";
+    }
+    return error;
+  }
+
   const listItems = numbers.map((TodoItem: ITodoItemIdDto) => (
     <Tr key={TodoItem.id}>
       <Td>{TodoItem.id}</Td>
-      <Td>{TodoItem.name}</Td>
+
+      <Td>
+        <Formik
+          initialValues={{ name: TodoItem.name }}
+          onSubmit={(values, actions) => {
+            setTimeout(() => {
+              alert(JSON.stringify(values, null, 2));
+              TodoItem.name = values.name;
+              updateTodoText(TodoItem);
+              actions.setSubmitting(false);
+            }, 1000);
+          }}>
+          {props => (
+            <Form>
+              <Container>
+                <Field name="name" validate={validateName}>
+                  {({ field, form }) => (
+                    <FormControl isInvalid={form.errors.name && form.touched.name}>
+                      <Input {...field} type="text" name="name" placeholder="Todo" />
+                      <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                    </FormControl>
+                  )}
+                </Field>
+
+                <Button mt={4} colorScheme="teal" isLoading={props.isSubmitting} type="submit">
+                  Submit
+                </Button>
+              </Container>
+            </Form>
+          )}
+        </Formik>
+      </Td>
       <Td>
         <Checkbox
           size="lg"
@@ -88,6 +146,7 @@ const TodoList: FC<props> = (props: { tableData: TodoItemIdDto }) => {
             <Th>ID</Th>
             <Th>Todo</Th>
             <Th>Status</Th>
+            <Th></Th>
           </Tr>
         </Thead>
         <Tbody>{listItems}</Tbody>
