@@ -16,6 +16,11 @@ export const table: Locale = {
     actions: {
       addNew: "Add",
       updateTodo: "Update"
+    },
+    tableTabs: {
+      all: "All",
+      active: "Active",
+      completed: "Completed"
     }
   }
 };

@@ -1,30 +1,23 @@
-import { DeleteIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { DeleteIcon } from "@chakra-ui/icons";
 import {
-  Box,
   Button,
   Checkbox,
   Container,
   FormControl,
   FormErrorMessage,
-  FormLabel,
-  Heading,
   IconButton,
   Input,
   InputGroup,
   InputRightAddon,
-  MenuButton,
   Table,
-  TableCaption,
   Tbody,
   Td,
-  Text,
   Th,
   Thead,
   Tr
 } from "@chakra-ui/react";
 import { Field, Form, Formik } from "formik";
 import { useLocales } from "hooks/useLocales";
-import { IncomingMessage } from "http";
 import React, { FC, useCallback } from "react";
 import { genTodoItemClient } from "services/backend/apiClients";
 import {
@@ -40,7 +33,7 @@ interface TodoListProps {
 }
 
 const TodoList: FC<TodoListProps> = props => {
-  const { t, locale, localeNameMap } = useLocales();
+  const { t } = useLocales();
   const numbers = props.tableData;
 
   const updateTodoState = useCallback(async value => {

@@ -5,8 +5,13 @@ import {
   Checkbox,
   Container,
   Heading,
+  Tab,
   Table,
   TableCaption,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   Tbody,
   Td,
   Text,
@@ -28,6 +33,7 @@ import { logger } from "utils/logger";
 import CreateTodo from "./CreateTodoItem";
 import LanguageToggle from "./LanguageToggle";
 import styles from "./styles.module.css";
+import TableTabs from "./TableTabs";
 import TodoCounter from "./TodoCounter";
 
 const Start: FC = () => {
@@ -57,7 +63,7 @@ const Start: FC = () => {
         <Heading>{t("example.title")}</Heading>
 
         <CreateTodo fetchData={fetchData}></CreateTodo>
-        <TodoList tableData={data} fetchData={fetchData}></TodoList>
+        <TableTabs tableData={data} fetchData={fetchData}></TableTabs>
         <TodoCounter tableData={data}></TodoCounter>
         <LanguageToggle></LanguageToggle>
       </Wrap>

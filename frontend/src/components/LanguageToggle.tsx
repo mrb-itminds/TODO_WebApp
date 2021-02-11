@@ -16,6 +16,7 @@ const LanguageToggle: FC = () => {
         Object.entries(localeNameMap).map(([id, name]) => (
           <Link key={id} href={route} locale={id} passHref>
             <Box
+              userSelect="none"
               p={2}
               m={2}
               bgColor={id === locale ? activeBg : menuBg}

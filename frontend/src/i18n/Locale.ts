@@ -13,5 +13,10 @@ export interface Locale {
       addNew: string;
       updateTodo: string;
     };
+    tableTabs: {
+      all: string;
+      active: string;
+      completed: string;
+    };
   };
 }
