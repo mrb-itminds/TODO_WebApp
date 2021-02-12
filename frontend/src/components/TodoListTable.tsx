@@ -30,48 +30,14 @@ import {
 interface TodoListProps {
   tableData: TodoItemIdDto[];
   fetchData: () => Promise<void>;
+  updateTodoText(value: ITodoItemIdDto): () => Promise<void>;
+  updateTodoState(value: ITodoItemIdDto): () => Promise<void>;
+  deleteTodo(value: ITodoItemIdDto): () => Promise<void>;
 }
 
 const TodoList: FC<TodoListProps> = props => {
   const { t } = useLocales();
   const numbers = props.tableData;
-
-  const updateTodoState = useCallback(async value => {
-    const todoClient = await genTodoItemClient();
-    if (value.type == TodoStates.Complete) {
-      value.type = TodoStates.Active;
-    } else value.type = TodoStates.Complete;
-    const command = new UpdateTodoItemCommand({
-      id: value.id,
-      todoItem: {
-        name: value.name,
-        type: value.type,
-        userId: 1
-      }
-    });
-    await todoClient.update(value.id, command);
-    props.fetchData();
-  }, []);
-
-  const updateTodoText = useCallback(async value => {
-    const todoClient = await genTodoItemClient();
-    const command = new UpdateTodoItemCommand({
-      id: value.id,
-      todoItem: {
-        name: value.name,
-        type: value.type,
-        userId: 1
-      }
-    });
-    await todoClient.update(value.id, command);
-    props.fetchData();
-  }, []);
-
-  const deleteTodo = useCallback(async value => {
-    const todoClient = await genTodoItemClient();
-    await todoClient.delete(value.id);
-    props.fetchData();
-  }, []);
 
   function validateName(value: string) {
     let error;
@@ -88,11 +54,12 @@ const TodoList: FC<TodoListProps> = props => {
       <Td>
         <Formik
           initialValues={{ name: TodoItem.name }}
+          enableReinitialize={true}
           onSubmit={(values, actions) => {
             setTimeout(() => {
               //alert(JSON.stringify(values, null, 2));
               TodoItem.name = values.name;
-              updateTodoText(TodoItem);
+              props.updateTodoText(TodoItem);
               actions.setSubmitting(false);
             }, 1000);
           }}>
@@ -127,17 +94,18 @@ const TodoList: FC<TodoListProps> = props => {
         <Checkbox
           size="lg"
           colorScheme="green"
-          defaultChecked={TodoItem.type == TodoStates.Complete}
+          //defaultChecked={TodoItem.type == TodoStates.Complete}
+          isChecked={TodoItem.type == TodoStates.Complete}
           inputProps={{ "aria-label": "Checkbox A" }}
           onChange={() => {
-            updateTodoState(TodoItem);
+            props.updateTodoState(TodoItem);
           }}
         />
       </Td>
       <Td>
         <IconButton
           onClick={() => {
-            deleteTodo(TodoItem);
+            props.deleteTodo(TodoItem);
           }}
           aria-label="Search database"
           size="xs"

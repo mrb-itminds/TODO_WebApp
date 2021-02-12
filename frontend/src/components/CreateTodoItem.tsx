@@ -65,12 +65,13 @@ const CreateTodo: FC<props> = props => {
                   <FormLabel htmlFor="name">{t("example.addTodoLine")}</FormLabel>
                   <InputGroup size="lg">
                     <Input {...field} type="text" name="name" placeholder="Todo" />
-                    <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                     <InputRightAddon>
                       <Button isLoading={props.isSubmitting} type="submit">
                         {t("example.actions.addNew")}
                       </Button>
                     </InputRightAddon>
+
+                    <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                   </InputGroup>
                 </FormControl>
               )}
