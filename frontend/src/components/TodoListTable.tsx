@@ -9,6 +9,7 @@ import {
   Input,
   InputGroup,
   InputRightAddon,
+  InputRightAddon as InputRightElement,
   Table,
   Tbody,
   Td,
@@ -19,7 +20,6 @@ import {
 import { Field, Form, Formik } from "formik";
 import { useLocales } from "hooks/useLocales";
 import React, { FC, useCallback } from "react";
-import { genTodoItemClient } from "services/backend/apiClients";
 import {
   ITodoItemIdDto,
   TodoItemIdDto,
@@ -70,11 +70,11 @@ const TodoList: FC<TodoListProps> = props => {
                   {({ field, form }) => (
                     <FormControl isInvalid={form.errors.name && form.touched.name}>
                       <InputGroup size="md">
-                        <Input {...field} type="text" name="name" placeholder="Todo" />
-                        <InputRightAddon width="4.5rem">
+                        <Input {...field} type="text" name="name" />
+                        <InputRightAddon padding={0} width={20}>
                           <Button
-                            h="1.75rem"
-                            width="4.5rem"
+                            isFullWidth={true}
+                            rounded={false}
                             isLoading={props.isSubmitting}
                             type="submit">
                             {t("example.actions.updateTodo")}

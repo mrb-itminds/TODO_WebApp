@@ -65,8 +65,13 @@ const CreateTodo: FC<props> = props => {
                   <FormLabel htmlFor="name">{t("example.addTodoLine")}</FormLabel>
                   <InputGroup size="lg">
                     <Input {...field} type="text" name="name" placeholder="Todo" />
-                    <InputRightAddon>
-                      <Button isLoading={props.isSubmitting} type="submit">
+                    <InputRightAddon padding={0} width={20}>
+                      <Button
+                        isFullWidth={true}
+                        isFullHeigth={true}
+                        rounded={false}
+                        isLoading={props.isSubmitting}
+                        type="submit">
                         {t("example.actions.addNew")}
                       </Button>
                     </InputRightAddon>

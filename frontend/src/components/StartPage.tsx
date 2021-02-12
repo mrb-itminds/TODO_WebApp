@@ -1,38 +1,16 @@
-import {
-  Box,
-  Button,
-  Center,
-  Checkbox,
-  Container,
-  Heading,
-  Tab,
-  Table,
-  TableCaption,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Tbody,
-  Td,
-  Text,
-  Tfoot,
-  Th,
-  Thead,
-  Tr,
-  Wrap
-} from "@chakra-ui/react";
-import TodoList from "components/TodoListTable";
+import { Button, Container, Heading, InputRightElement, Wrap } from "@chakra-ui/react";
 import { useColors } from "hooks/useColors";
 import { useLocales } from "hooks/useLocales";
 import { useRouter } from "next/router";
 import React, { FC, useCallback, useEffect, useState } from "react";
+import { CSVLink } from "react-csv";
 import { genTodoItemClient } from "services/backend/apiClients";
-import { TodoItemIdDto, TodoStates } from "services/backend/nswagts";
+import { TodoItemIdDto } from "services/backend/nswagts";
 import { logger } from "utils/logger";
 
+import ColorModeToggle from "./ColorModeToggle";
 import CreateTodo from "./CreateTodoItem";
 import LanguageToggle from "./LanguageToggle";
-import styles from "./styles.module.css";
 import TableTabs from "./TableTabs";
 import TodoCounter from "./TodoCounter";
 
@@ -66,6 +44,8 @@ const Start: FC = () => {
         <TableTabs tableData={data} fetchData={fetchData}></TableTabs>
         <TodoCounter tableData={data}></TodoCounter>
         <LanguageToggle></LanguageToggle>
+        <ColorModeToggle></ColorModeToggle>
+        <CSVLink data={data}>Export as CSV</CSVLink>
       </Wrap>
     </Container>
   );
