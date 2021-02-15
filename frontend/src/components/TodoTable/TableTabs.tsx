@@ -19,7 +19,8 @@ import {
   Td,
   Th,
   Thead,
-  Tr
+  Tr,
+  useToast
 } from "@chakra-ui/react";
 import { Field, Form, Formik } from "formik";
 import { useLocales } from "hooks/useLocales";
@@ -48,6 +49,7 @@ const TableTabs: FC<TableTabProps> = props => {
   const data = props.tableData;
   const activeData: TodoItemIdDto[] = [];
   const completedData: TodoItemIdDto[] = [];
+  const toast = useToast();
   filterTables();
 
   const updateTodoText = useCallback(

@@ -21,6 +21,11 @@ export const table: Locale = {
       all: "All",
       active: "Active",
       completed: "Completed"
+    },
+    toasts: {
+      added: "Added a new todo",
+      updated: "Updated a todo",
+      deleted: "Deleted a todo"
     }
   }
 };

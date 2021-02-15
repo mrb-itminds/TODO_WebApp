@@ -1,4 +1,4 @@
-import { Button, Container, Heading, InputRightElement, Wrap } from "@chakra-ui/react";
+import { Button, Center, Container, Heading, InputRightElement, Wrap } from "@chakra-ui/react";
 import { useColors } from "hooks/useColors";
 import { useLocales } from "hooks/useLocales";
 import { useRouter } from "next/router";
@@ -8,11 +8,11 @@ import { genTodoItemClient } from "services/backend/apiClients";
 import { TodoItemIdDto } from "services/backend/nswagts";
 import { logger } from "utils/logger";
 
-import ColorModeToggle from "./ColorModeToggle";
 import CreateTodo from "./CreateTodoItem";
-import LanguageToggle from "./LanguageToggle";
-import TableTabs from "./TableTabs";
-import TodoCounter from "./TodoCounter";
+import TableTabs from "./TodoTable/TableTabs";
+import ColorModeToggle from "./Utility/ColorModeToggle";
+import LanguageToggle from "./Utility/LanguageToggle";
+import TodoCounter from "./Utility/TodoCounter";
 
 const Start: FC = () => {
   const [data, setData] = useState<TodoItemIdDto[]>([]);
@@ -36,7 +36,7 @@ const Start: FC = () => {
   }, [fetchData]);
 
   return (
-    <Container>
+    <Center>
       <Wrap width="700px" justify="center">
         <Heading>{t("example.title")}</Heading>
 
@@ -45,9 +45,11 @@ const Start: FC = () => {
         <TodoCounter tableData={data}></TodoCounter>
         <LanguageToggle></LanguageToggle>
         <ColorModeToggle></ColorModeToggle>
-        <CSVLink data={data}>Export as CSV</CSVLink>
+        <Button marginLeft={10}>
+          <CSVLink data={data}>Export as CSV</CSVLink>
+        </Button>
       </Wrap>
-    </Container>
+    </Center>
   );
 };
 export default Start;

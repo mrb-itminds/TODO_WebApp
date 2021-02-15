@@ -18,5 +18,10 @@ export interface Locale {
       active: string;
       completed: string;
     };
+    toasts: {
+      added: string;
+      updated: string;
+      deleted: string;
+    };
   };
 }

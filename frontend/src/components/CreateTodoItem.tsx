@@ -6,7 +6,9 @@ import {
   FormLabel,
   Input,
   InputGroup,
-  InputRightAddon
+  InputRightAddon,
+  toast,
+  useToast
 } from "@chakra-ui/react";
 import { Field, Form, Formik } from "formik";
 import { useLocales } from "hooks/useLocales";
@@ -22,6 +24,7 @@ import {
 
 const CreateTodo: FC<props> = props => {
   const { t, locale, localeNameMap } = useLocales();
+  const toast = useToast();
 
   function validateName(value) {
     let error;
@@ -67,15 +70,22 @@ const CreateTodo: FC<props> = props => {
                     <Input {...field} type="text" name="name" placeholder="Todo" />
                     <InputRightAddon padding={0} width={20}>
                       <Button
+                        margin={0}
                         isFullWidth={true}
-                        isFullHeigth={true}
                         rounded={false}
                         isLoading={props.isSubmitting}
-                        type="submit">
+                        type="submit"
+                        onClick={() =>
+                          toast({
+                            description: `${t("example.toasts.added")}`,
+                            status: "success",
+                            duration: 5000,
+                            isClosable: true
+                          })
+                        }>
                         {t("example.actions.addNew")}
                       </Button>
                     </InputRightAddon>
-
                     <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                   </InputGroup>
                 </FormControl>

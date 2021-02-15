@@ -15,7 +15,8 @@ import {
   Td,
   Th,
   Thead,
-  Tr
+  Tr,
+  useToast
 } from "@chakra-ui/react";
 import { Field, Form, Formik } from "formik";
 import { useLocales } from "hooks/useLocales";
@@ -35,8 +36,9 @@ interface TodoListProps {
   deleteTodo(value: ITodoItemIdDto): () => Promise<void>;
 }
 
-const TodoList: FC<TodoListProps> = props => {
+const TableItem: FC<TodoListProps> = props => {
   const { t } = useLocales();
+  const toast = useToast();
   const numbers = props.tableData;
 
   function validateName(value: string) {
@@ -76,6 +78,14 @@ const TodoList: FC<TodoListProps> = props => {
                             isFullWidth={true}
                             rounded={false}
                             isLoading={props.isSubmitting}
+                            onClick={() =>
+                              toast({
+                                description: `${t("example.toasts.updated")}`,
+                                status: "success",
+                                duration: 5000,
+                                isClosable: true
+                              })
+                            }
                             type="submit">
                             {t("example.actions.updateTodo")}
                           </Button>
@@ -99,6 +109,12 @@ const TodoList: FC<TodoListProps> = props => {
           inputProps={{ "aria-label": "Checkbox A" }}
           onChange={() => {
             props.updateTodoState(TodoItem);
+            toast({
+              description: `${t("example.toasts.updated")}`,
+              status: "success",
+              duration: 5000,
+              isClosable: true
+            });
           }}
         />
       </Td>
@@ -106,6 +122,12 @@ const TodoList: FC<TodoListProps> = props => {
         <IconButton
           onClick={() => {
             props.deleteTodo(TodoItem);
+            toast({
+              description: `${t("example.toasts.deleted")}`,
+              status: "success",
+              duration: 5000,
+              isClosable: true
+            });
           }}
           aria-label="Search database"
           size="xs"
@@ -116,20 +138,6 @@ const TodoList: FC<TodoListProps> = props => {
     </Tr>
   ));
 
-  return (
-    <div>
-      <Table minWidth="700px" variant="simple">
-        <Thead>
-          <Tr>
-            <Th>ID</Th>
-            <Th>Todo</Th>
-            <Th>Status</Th>
-            <Th></Th>
-          </Tr>
-        </Thead>
-        <Tbody>{listItems}</Tbody>
-      </Table>
-    </div>
-  );
+  return <Tbody>{listItems}</Tbody>;
 };
-export default TodoList;
+export default TableItem;
