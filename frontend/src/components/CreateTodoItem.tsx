@@ -7,26 +7,23 @@ import {
   Input,
   InputGroup,
   InputRightAddon,
-  toast,
   useToast
 } from "@chakra-ui/react";
 import { Field, Form, Formik } from "formik";
 import { useLocales } from "hooks/useLocales";
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback } from "react";
 import { genTodoItemClient } from "services/backend/apiClients";
-import {
-  CreateTodoItemCommand,
-  ITodoItemIdDto,
-  TodoItemDto,
-  TodoItemIdDto,
-  TodoStates
-} from "services/backend/nswagts";
+import { CreateTodoItemCommand, TodoStates } from "services/backend/nswagts";
 
-const CreateTodo: FC<props> = props => {
-  const { t, locale, localeNameMap } = useLocales();
+interface CreateTodoProps {
+  fetchData(): () => Promise<void>;
+}
+
+const CreateTodo: FC<CreateTodoProps> = props => {
+  const { t } = useLocales();
   const toast = useToast();
 
-  function validateName(value) {
+  function validateName(value: string) {
     let error;
     if (!value) {
       error = "Name is required";

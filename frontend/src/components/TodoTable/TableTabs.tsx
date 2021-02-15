@@ -1,38 +1,8 @@
-import { DeleteIcon } from "@chakra-ui/icons";
-import {
-  Button,
-  Checkbox,
-  Container,
-  FormControl,
-  FormErrorMessage,
-  IconButton,
-  Input,
-  InputGroup,
-  InputRightAddon,
-  Tab,
-  Table,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-  useToast
-} from "@chakra-ui/react";
-import { Field, Form, Formik } from "formik";
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useLocales } from "hooks/useLocales";
-import React, { FC, useCallback, useEffect, useState } from "react";
+import React, { FC, useCallback, useEffect } from "react";
 import { genTodoItemClient } from "services/backend/apiClients";
-import {
-  ITodoItemIdDto,
-  TodoItemIdDto,
-  TodoStates,
-  UpdateTodoItemCommand
-} from "services/backend/nswagts";
-import { logger } from "utils/logger";
+import { TodoItemIdDto, TodoStates, UpdateTodoItemCommand } from "services/backend/nswagts";
 
 import TodoList from "./TodoListTable";
 
@@ -42,14 +12,10 @@ interface TableTabProps {
 }
 
 const TableTabs: FC<TableTabProps> = props => {
-  //const [data, setAllData] = useState(props.tableData);
-  //const [activeData, setActiveData] = useState<TodoItemIdDto[]>([]);
-  //const [completedData, setCompletedData] = useState<TodoItemIdDto[]>([]);
   const { t } = useLocales();
   const data = props.tableData;
   const activeData: TodoItemIdDto[] = [];
   const completedData: TodoItemIdDto[] = [];
-  const toast = useToast();
   filterTables();
 
   const updateTodoText = useCallback(
@@ -107,7 +73,7 @@ const TableTabs: FC<TableTabProps> = props => {
 
   useEffect(() => {
     filterTables();
-  }, [data]);
+  }, [props.tableData]);
 
   return (
     <Tabs marginTop="15px" isFitted variant="enclosed" size="md" defaultIndex={0}>

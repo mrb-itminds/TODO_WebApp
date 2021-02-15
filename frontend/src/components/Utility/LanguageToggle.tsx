@@ -7,7 +7,7 @@ import { FC } from "react";
 
 const LanguageToggle: FC = () => {
   const { route } = useRouter();
-  const { t, locale, localeNameMap } = useLocales();
+  const { locale, localeNameMap } = useLocales();
   const { menuBg, hoverBg, activeBg } = useColors();
 
   return (

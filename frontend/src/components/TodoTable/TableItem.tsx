@@ -9,28 +9,18 @@ import {
   Input,
   InputGroup,
   InputRightAddon,
-  InputRightAddon as InputRightElement,
-  Table,
   Tbody,
   Td,
-  Th,
-  Thead,
   Tr,
   useToast
 } from "@chakra-ui/react";
 import { Field, Form, Formik } from "formik";
 import { useLocales } from "hooks/useLocales";
-import React, { FC, useCallback } from "react";
-import {
-  ITodoItemIdDto,
-  TodoItemIdDto,
-  TodoStates,
-  UpdateTodoItemCommand
-} from "services/backend/nswagts";
+import React, { FC } from "react";
+import { ITodoItemIdDto, TodoItemIdDto, TodoStates } from "services/backend/nswagts";
 
 interface TodoListProps {
   tableData: TodoItemIdDto[];
-  fetchData: () => Promise<void>;
   updateTodoText(value: ITodoItemIdDto): () => Promise<void>;
   updateTodoState(value: ITodoItemIdDto): () => Promise<void>;
   deleteTodo(value: ITodoItemIdDto): () => Promise<void>;
@@ -59,7 +49,6 @@ const TableItem: FC<TodoListProps> = props => {
           enableReinitialize={true}
           onSubmit={(values, actions) => {
             setTimeout(() => {
-              //alert(JSON.stringify(values, null, 2));
               TodoItem.name = values.name;
               props.updateTodoText(TodoItem);
               actions.setSubmitting(false);

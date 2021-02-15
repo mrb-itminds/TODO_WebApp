@@ -1,7 +1,5 @@
-import { Button, Center, Container, Heading, InputRightElement, Wrap } from "@chakra-ui/react";
-import { useColors } from "hooks/useColors";
+import { Button, Center, Heading, Wrap } from "@chakra-ui/react";
 import { useLocales } from "hooks/useLocales";
-import { useRouter } from "next/router";
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { CSVLink } from "react-csv";
 import { genTodoItemClient } from "services/backend/apiClients";
@@ -16,9 +14,7 @@ import TodoCounter from "./Utility/TodoCounter";
 
 const Start: FC = () => {
   const [data, setData] = useState<TodoItemIdDto[]>([]);
-  const { route } = useRouter();
-  const { t, locale, localeNameMap } = useLocales();
-  const { menuBg, hoverBg, activeBg } = useColors();
+  const { t } = useLocales();
 
   const fetchData = useCallback(async () => {
     try {
