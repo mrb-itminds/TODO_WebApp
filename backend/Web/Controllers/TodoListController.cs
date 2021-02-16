@@ -14,19 +14,37 @@ using Application.TodoItems.Commands.UpdateTodoItem;
 using Application.TodoItems.Queries.GetTodoItems;
 using Application.TodoLists;
 using Application.TodoLists.Commands.CreateTodoList;
+using Application.TodoLists.Commands.DeleteTodoList;
+using Application.TodoLists.Commands.UpdateTodoList;
 using Application.TodoLists.Queries.GetTodoLists;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers
 {
-  public class TodoListControllers : ApiControllerBase
+  public class TodoListController : ApiControllerBase
   {
     [HttpPost]
     public async Task<ActionResult<int>> Create(CreateTodoListCommand command)
     {
       return await Mediator.Send(command);
     }
+    [HttpPut("{id}")]
+    public async Task<ActionResult> Update([FromRoute] int id, UpdateTodoListCommand command)
+    {
+      command.Id = id;
+      await Mediator.Send(command);
 
+      return NoContent();
+    }
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> Delete([FromRoute] int id)
+    {
+      await Mediator.Send(new DeleteTodoListCommand()
+      {
+        Id = id
+      });
+      return NoContent();
+    }
     [HttpGet]
     public async Task<ActionResult<List<TodoListIdDto>>> Get()
     {

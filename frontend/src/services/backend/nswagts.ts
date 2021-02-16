@@ -535,12 +535,14 @@ export class TodoItemClient extends ClientBase implements ITodoItemClient {
     }
 }
 
-export interface ITodoListControllersClient {
+export interface ITodoListClient {
     create(command: CreateTodoListCommand): Promise<number>;
     get(): Promise<TodoListIdDto[]>;
+    update(id: number, command: UpdateTodoListCommand): Promise<FileResponse>;
+    delete(id: number): Promise<FileResponse>;
 }
 
-export class TodoListControllersClient extends ClientBase implements ITodoListControllersClient {
+export class TodoListClient extends ClientBase implements ITodoListClient {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -552,7 +554,7 @@ export class TodoListControllersClient extends ClientBase implements ITodoListCo
     }
 
     create(command: CreateTodoListCommand): Promise<number> {
-        let url_ = this.baseUrl + "/api/TodoListControllers";
+        let url_ = this.baseUrl + "/api/TodoList";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(command);
@@ -592,7 +594,7 @@ export class TodoListControllersClient extends ClientBase implements ITodoListCo
     }
 
     get(): Promise<TodoListIdDto[]> {
-        let url_ = this.baseUrl + "/api/TodoListControllers";
+        let url_ = this.baseUrl + "/api/TodoList";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = <RequestInit>{
@@ -629,6 +631,84 @@ export class TodoListControllersClient extends ClientBase implements ITodoListCo
             });
         }
         return Promise.resolve<TodoListIdDto[]>(<any>null);
+    }
+
+    update(id: number, command: UpdateTodoListCommand): Promise<FileResponse> {
+        let url_ = this.baseUrl + "/api/TodoList/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processUpdate(_response));
+        });
+    }
+
+    protected processUpdate(response: Response): Promise<FileResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return response.blob().then(blob => { return { fileName: fileName, data: blob, status: status, headers: _headers }; });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<FileResponse>(<any>null);
+    }
+
+    delete(id: number): Promise<FileResponse> {
+        let url_ = this.baseUrl + "/api/TodoList/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "DELETE",
+            headers: {
+                "Accept": "application/octet-stream"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processDelete(_response));
+        });
+    }
+
+    protected processDelete(response: Response): Promise<FileResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return response.blob().then(blob => { return { fileName: fileName, data: blob, status: status, headers: _headers }; });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<FileResponse>(<any>null);
     }
 }
 
@@ -1157,6 +1237,47 @@ export class TodoListDto implements ITodoListDto {
 export interface ITodoListDto {
     name?: string | null;
     userId?: number;
+}
+
+export class UpdateTodoListCommand implements IUpdateTodoListCommand {
+    id?: number;
+    todoList?: TodoListDto | null;
+
+    constructor(data?: IUpdateTodoListCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            this.todoList = data.todoList && !(<any>data.todoList).toJSON ? new TodoListDto(data.todoList) : <TodoListDto>this.todoList; 
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.todoList = _data["todoList"] ? TodoListDto.fromJS(_data["todoList"]) : <any>null;
+        }
+    }
+
+    static fromJS(data: any): UpdateTodoListCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateTodoListCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["todoList"] = this.todoList ? this.todoList.toJSON() : <any>null;
+        return data; 
+    }
+}
+
+export interface IUpdateTodoListCommand {
+    id?: number;
+    todoList?: ITodoListDto | null;
 }
 
 export class TodoListIdDto extends TodoListDto implements ITodoListIdDto {
