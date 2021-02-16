@@ -537,6 +537,7 @@ export class TodoItemClient extends ClientBase implements ITodoItemClient {
 
 export interface ITodoListControllersClient {
     create(command: CreateTodoListCommand): Promise<number>;
+    get(): Promise<TodoListIdDto[]>;
 }
 
 export class TodoListControllersClient extends ClientBase implements ITodoListControllersClient {
@@ -588,6 +589,46 @@ export class TodoListControllersClient extends ClientBase implements ITodoListCo
             });
         }
         return Promise.resolve<number>(<any>null);
+    }
+
+    get(): Promise<TodoListIdDto[]> {
+        let url_ = this.baseUrl + "/api/TodoListControllers";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGet(_response));
+        });
+    }
+
+    protected processGet(response: Response): Promise<TodoListIdDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(TodoListIdDto.fromJS(item));
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<TodoListIdDto[]>(<any>null);
     }
 }
 
@@ -1116,6 +1157,39 @@ export class TodoListDto implements ITodoListDto {
 export interface ITodoListDto {
     name?: string | null;
     userId?: number;
+}
+
+export class TodoListIdDto extends TodoListDto implements ITodoListIdDto {
+    id?: number;
+
+    constructor(data?: ITodoListIdDto) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): TodoListIdDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TodoListIdDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface ITodoListIdDto extends ITodoListDto {
+    id?: number;
 }
 
 export class CreateUserCommand implements ICreateUserCommand {
