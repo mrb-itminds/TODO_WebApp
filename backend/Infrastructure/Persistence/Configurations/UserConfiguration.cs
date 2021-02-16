@@ -17,7 +17,7 @@ namespace Infrastructure.Persistence.Configurations
         .HasMaxLength(200)
         .IsRequired();
 
-      builder.HasMany<TodoItem>(e => e.TodoItems)
+      builder.HasMany<TodoList>(e => e.TodoLists)
         .WithOne(e => e.User)
         .IsRequired(true);
     }
