@@ -1,7 +1,6 @@
-using Application.TodoItems.Commands.CreateTodoItem;
 using FluentValidation;
 
-namespace Application.ExampleChildren.Commands.CreateExampleChild
+namespace Application.TodoItems.Commands.CreateTodoItem
 {
   public class CreateTodoItemCommandValidator : AbstractValidator<CreateTodoItemCommand>
   {

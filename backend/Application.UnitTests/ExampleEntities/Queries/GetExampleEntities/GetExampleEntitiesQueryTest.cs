@@ -5,7 +5,6 @@ using Infrastructure.Persistence;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.TodoItems.Commands.Queries.GetTodoItems;
 using Xunit;
 
 namespace Application.UnitTests.ExampleChildren.Queries.GetExampleChildren

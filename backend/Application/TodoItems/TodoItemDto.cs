@@ -1,9 +1,9 @@
-using AutoMapper;
 using Application.Common.Mappings;
+using AutoMapper;
 using Domain.Entities;
 using Domain.Enums;
 
-namespace Application.ExampleEntities
+namespace Application.TodoItems
 {
   public class TodoItemDto : IAutoMap<TodoItem>
   {

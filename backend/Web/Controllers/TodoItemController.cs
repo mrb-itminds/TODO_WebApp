@@ -7,10 +7,11 @@ using Application.ExampleChildren.Commands.CreateExampleChild;
 using Application.ExampleChildren.Commands.DeleteExampleChild;
 using Application.ExampleEntities;
 using Application.ExampleEntities.Queries.GetExampleChildren;
+using Application.TodoItems;
 using Application.TodoItems.Commands.CreateTodoItem;
 using Application.TodoItems.Commands.DeleteTodoItem;
-using Application.TodoItems.Commands.Queries.GetTodoItems;
 using Application.TodoItems.Commands.UpdateTodoItem;
+using Application.TodoItems.Queries.GetTodoItems;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers

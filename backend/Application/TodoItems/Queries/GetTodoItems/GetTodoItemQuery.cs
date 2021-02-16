@@ -2,15 +2,13 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Interfaces;
-using Application.ExampleChildren;
 using Application.ExampleEntities;
-using Application.ExampleEntities.Queries.GetExampleChildren;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.TodoItems.Commands.Queries.GetTodoItems
+namespace Application.TodoItems.Queries.GetTodoItems
 {
   public class GetTodoItemsQuery : IRequest<List<TodoItemIdDto>>
   {

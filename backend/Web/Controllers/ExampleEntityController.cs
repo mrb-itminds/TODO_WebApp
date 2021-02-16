@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.ExampleEntities.Commands.UpdateExampleEntity;
 using Application.ExampleEntities.Queries.GetExampleChildren;
-using Application.TodoItems.Commands.Queries.GetTodoItems;
 
 namespace Web.Controllers
 {
