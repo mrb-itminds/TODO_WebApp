@@ -1,11 +1,10 @@
-using Application.Common.Interfaces;
-using Application.ExampleParents;
-using Domain.Entities;
-using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Interfaces;
+using Domain.Entities;
+using MediatR;
 
-namespace Application.ExampleChildLists.Commands.CreateExampleChildList
+namespace Application.ExampleParents.Commands.CreateExampleParent
 {
   public class CreateExampleParentCommand : IRequest<int>
   {

@@ -3,6 +3,7 @@ using Application.ExampleParents;
 using FluentAssertions;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.ExampleParents.Commands.CreateExampleParent;
 using Xunit;
 
 namespace Application.UnitTests.ExampleChildLists.Commands.CreateExampleChildList

@@ -21,12 +21,13 @@ namespace Application.TodoLists.Commands.CreateTodoList
       {
         _context = context;
       }
-      public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+      public async Task<int> Handle(CreateTodoListCommand request, CancellationToken cancellationToken)
       {
 
         var todoList = new TodoList
         {
-          Name = request.Parent.Name
+          Name = request.TodoList.Name,
+          UserId = request.TodoList.UserId
         };
 
         _context.TodoLists.Add(todoList);

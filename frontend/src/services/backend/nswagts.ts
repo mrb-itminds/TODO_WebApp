@@ -535,6 +535,62 @@ export class TodoItemClient extends ClientBase implements ITodoItemClient {
     }
 }
 
+export interface ITodoListControllersClient {
+    create(command: CreateTodoListCommand): Promise<number>;
+}
+
+export class TodoListControllersClient extends ClientBase implements ITodoListControllersClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(configuration: AuthClient, baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super(configuration);
+        this.http = http ? http : <any>window;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    create(command: CreateTodoListCommand): Promise<number> {
+        let url_ = this.baseUrl + "/api/TodoListControllers";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processCreate(_response));
+        });
+    }
+
+    protected processCreate(response: Response): Promise<number> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<number>(<any>null);
+    }
+}
+
 export interface IUserClient {
     create(command: CreateUserCommand): Promise<number>;
 }
@@ -865,7 +921,7 @@ export interface ICreateTodoItemCommand {
 export class TodoItemDto implements ITodoItemDto {
     name?: string | null;
     type?: TodoStates;
-    userId?: number;
+    todoListId?: number;
 
     constructor(data?: ITodoItemDto) {
         if (data) {
@@ -880,7 +936,7 @@ export class TodoItemDto implements ITodoItemDto {
         if (_data) {
             this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
             this.type = _data["type"] !== undefined ? _data["type"] : <any>null;
-            this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
+            this.todoListId = _data["todoListId"] !== undefined ? _data["todoListId"] : <any>null;
         }
     }
 
@@ -895,7 +951,7 @@ export class TodoItemDto implements ITodoItemDto {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name !== undefined ? this.name : <any>null;
         data["type"] = this.type !== undefined ? this.type : <any>null;
-        data["userId"] = this.userId !== undefined ? this.userId : <any>null;
+        data["todoListId"] = this.todoListId !== undefined ? this.todoListId : <any>null;
         return data; 
     }
 }
@@ -903,7 +959,7 @@ export class TodoItemDto implements ITodoItemDto {
 export interface ITodoItemDto {
     name?: string | null;
     type?: TodoStates;
-    userId?: number;
+    todoListId?: number;
 }
 
 export enum TodoStates {
@@ -983,6 +1039,83 @@ export class TodoItemIdDto extends TodoItemDto implements ITodoItemIdDto {
 
 export interface ITodoItemIdDto extends ITodoItemDto {
     id?: number;
+}
+
+export class CreateTodoListCommand implements ICreateTodoListCommand {
+    todoList?: TodoListDto | null;
+
+    constructor(data?: ICreateTodoListCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            this.todoList = data.todoList && !(<any>data.todoList).toJSON ? new TodoListDto(data.todoList) : <TodoListDto>this.todoList; 
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.todoList = _data["todoList"] ? TodoListDto.fromJS(_data["todoList"]) : <any>null;
+        }
+    }
+
+    static fromJS(data: any): CreateTodoListCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateTodoListCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["todoList"] = this.todoList ? this.todoList.toJSON() : <any>null;
+        return data; 
+    }
+}
+
+export interface ICreateTodoListCommand {
+    todoList?: ITodoListDto | null;
+}
+
+export class TodoListDto implements ITodoListDto {
+    name?: string | null;
+    userId?: number;
+
+    constructor(data?: ITodoListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
+            this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): TodoListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TodoListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name !== undefined ? this.name : <any>null;
+        data["userId"] = this.userId !== undefined ? this.userId : <any>null;
+        return data; 
+    }
+}
+
+export interface ITodoListDto {
+    name?: string | null;
+    userId?: number;
 }
 
 export class CreateUserCommand implements ICreateUserCommand {

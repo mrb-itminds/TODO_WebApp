@@ -13,6 +13,7 @@ namespace Application.Common.Interfaces
     DbSet<ExampleParent> ExampleParents { get; set; }
     DbSet<TodoItem> TodoItems { get; set; }
     DbSet<User> Users { get; set; }
+    DbSet<TodoList> TodoLists { get; set; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
   }
 }
