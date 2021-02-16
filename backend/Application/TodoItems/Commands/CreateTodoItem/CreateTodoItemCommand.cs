@@ -26,7 +26,7 @@ namespace Application.TodoItems.Commands.CreateTodoItem
         {
           Name = request.TodoItem.Name,
           Type = request.TodoItem.Type,
-          UserId = request.TodoItem.UserId,
+          TodoListId = request.TodoItem.TodoListId,
         };
 
         _context.TodoItems.Add(exampleEntity);

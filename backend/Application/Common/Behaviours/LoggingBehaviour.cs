@@ -23,7 +23,7 @@ namespace Application.Common.Behaviours
       var requestName = typeof(TRequest).Name;
       var userId = _currentUserService.UserId ?? string.Empty;
 
-      _logger.LogInformation("Request: {Name} {@UserId} {@UserId} {@Request}",
+      _logger.LogInformation("Request: {Name} {@TodoListId} {@TodoListId} {@Request}",
           requestName, userId, userId, request);
     }
 #pragma warning restore 1998

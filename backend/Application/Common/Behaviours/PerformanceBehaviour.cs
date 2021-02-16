@@ -38,7 +38,7 @@ namespace Application.Common.Behaviours
         var requestName = typeof(TRequest).Name;
         var userId = _currentUserService.UserId ?? string.Empty;
 
-        _logger.LogWarning("Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserId} {@Request}",
+        _logger.LogWarning("Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@TodoListId} {@Request}",
             requestName, elapsedMilliseconds, userId, request);
       }
 

@@ -9,7 +9,7 @@ namespace Application.ExampleEntities
   {
     public string Name { get; set; }
     public TodoStates Type { get; set; }
-    public int UserId { get; set; }
+    public int TodoListId { get; set; }
 
     public void Mapping(Profile profile)
     {

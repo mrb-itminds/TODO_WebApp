@@ -15,7 +15,7 @@ namespace Application.ExampleChildren.Commands.CreateExampleChild
       RuleFor(e => e.TodoItem.Type)
           .IsInEnum()
           .NotNull();
-      RuleFor(e => e.TodoItem.UserId)
+      RuleFor(e => e.TodoItem.TodoListId)
           .NotNull();
     }
   }

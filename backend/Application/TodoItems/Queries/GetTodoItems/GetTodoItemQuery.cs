@@ -27,7 +27,7 @@ namespace Application.TodoItems.Commands.Queries.GetTodoItems
       public async Task<List<TodoItemIdDto>> Handle(GetTodoItemsQuery request, CancellationToken cancellationToken)
       {
         var viewModel = await _context.TodoItems
-                .Include(x => x.User)
+                .Include(x => x.TodoList)
                 .ProjectTo<TodoItemIdDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 

@@ -37,14 +37,14 @@ namespace Application.TodoItems.Commands.UpdateTodoItem
           throw new NotFoundException(nameof(Domain.Entities.TodoItem), request.Id);
         }
 
-        if (!await _context.Users.AnyAsync(e => e.Id == request.TodoItem.UserId, cancellationToken))
+        if (!await _context.TodoItems.AnyAsync(e => e.Id == request.TodoItem.TodoListId, cancellationToken))
         {
-          throw new NotFoundException(nameof(User), request.TodoItem.UserId);
+          throw new NotFoundException(nameof(User), request.TodoItem.TodoListId);
         }
 
         exampleEntity.Name = request.TodoItem.Name;
         exampleEntity.Type = request.TodoItem.Type;
-        exampleEntity.UserId = request.TodoItem.UserId;
+        exampleEntity.TodoListId = request.TodoItem.TodoListId;
 
         _context.TodoItems.Update(exampleEntity);
         await _context.SaveChangesAsync(cancellationToken);
